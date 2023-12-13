@@ -1,7 +1,7 @@
 Package: tidytuesdayR
 Type: Package
 Title: Access the Weekly 'TidyTuesday' Project Dataset
-Version: 1.0.2
+Version: 1.0.3
 Authors@R: 
     c(
       person(
@@ -38,19 +38,19 @@ License: MIT + file LICENSE
 URL: https://github.com/thebioengineer/tidytuesdayR
 BugReports: https://github.com/thebioengineer/tidytuesdayR/issues
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Depends: R (>= 3.4.0)
-Suggests: testthat (>= 2.1.0), covr, pkgdown, tibble
+Suggests: testthat (>= 2.1.0), covr, pkgdown, tibble, withr
 Imports: readxl (>= 1.0.0), rvest (>= 0.3.2), tools (>= 3.1.0),
         lubridate (>= 1.7.0), purrr (>= 0.2.5), readr (>= 1.0.0),
         rstudioapi (>= 0.2), xml2 (>= 1.2.0), httr, jsonlite, magrittr,
         usethis
 NeedsCompilation: no
-Packaged: 2022-02-01 04:28:24 UTC; Ellis
+Packaged: 2023-12-13 05:23:22 UTC; Ellis
 Author: Ellis Hughes [aut, cre],
   Jon Harmon [ctb],
   Thomas Mock [ctb],
   R4DS Online Learning Community [dtc]
 Maintainer: Ellis Hughes <ellishughes@live.com>
 Repository: CRAN
-Date/Publication: 2022-02-01 08:20:02 UTC
+Date/Publication: 2023-12-13 10:30:02 UTC
