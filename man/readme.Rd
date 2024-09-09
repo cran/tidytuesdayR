@@ -10,17 +10,17 @@ readme(tt)
 \item{tt}{tt_data object for printing}
 }
 \value{
-Does not return anything. Used to show readme of the downloaded
- TidyTuesday dataset in the Viewer.
+Null, invisibly. Used to show readme of the downloaded TidyTuesday
+dataset in the Viewer.
 }
 \description{
 Readme HTML maker and Viewer
 }
 \examples{
-\donttest{
-if(rate_limit_check(quiet = TRUE) > 30 & interactive()){
-tt_output <- tt_load_gh("2019-01-15")
-readme(tt_output)
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
+if (rate_limit_check(quiet = TRUE) > 30) {
+  tt_output <- tt_load_gh("2019-01-15")
+  readme(tt_output)
 }
-}
+\dontshow{\}) # examplesIf}
 }

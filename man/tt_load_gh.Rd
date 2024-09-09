@@ -4,50 +4,37 @@
 \alias{tt_load_gh}
 \title{Load TidyTuesday data from Github}
 \usage{
-tt_load_gh(x, week, auth = github_pat())
+tt_load_gh(x, week = NULL, auth = gh::gh_token())
 }
 \arguments{
-\item{x}{string representation of the date of data to pull, in
-YYYY-MM-dd format, or just numeric entry for year}
+\item{x}{The date of data to pull (in "YYYY-MM-dd" format), or the four-digit
+year as a number.}
 
-\item{week}{left empty unless x is a numeric year entry, in which case the
-week of interest should be entered}
+\item{week}{Which week number to use within a given year. Only used when \code{x}
+is a valid year.}
 
-\item{auth}{github Personal Access Token. See PAT section for more
-information}
+\item{auth}{A GitHub token. See \code{\link[gh:gh_token]{gh::gh_token()}} for more details.}
 }
 \value{
-a 'tt' object. This contains the files available for the week,
- readme html, and the date of the TidyTuesday.
+A \code{tt} object. This contains the files available for the week,
+readme html, and the date of the TidyTuesday.
 }
 \description{
 Pulls the readme and URLs of the data from the TidyTuesday
 github folder based on the date provided
 }
-\section{PAT}{
-
-
-A Github PAT is a personal Access Token. This allows for signed queries to
-the github api, and increases the limit on the number of requests allowed
-from 60 to 5000. Follow instructions from
-<https://happygitwithr.com/github-pat.html> to set the PAT.
-}
-
 \examples{
-
+\dontshow{if (interactive()) (if (getRversion() >= "3.4") withAutoprint else force)(\{ # examplesIf}
 # check to make sure there are requests still available
-if(rate_limit_check(quiet = TRUE) > 30 & interactive()){
- tt_gh <- tt_load_gh("2019-01-15")
+if (rate_limit_check(quiet = TRUE) > 30) {
+  tt_gh <- tt_load_gh("2019-01-15")
+  ## readme attempts to open the readme for the weekly dataset
+  readme(tt_gh)
 
- ## readme attempts to open the readme for the weekly dataset
- readme(tt_gh)
-
- agencies <- tt_download(
+  agencies <- tt_download(
     tt_gh,
     files = "agencies.csv"
- )
-
-
+  )
 }
-
+\dontshow{\}) # examplesIf}
 }
