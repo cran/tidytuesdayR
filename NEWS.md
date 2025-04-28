@@ -1,6 +1,16 @@
+# tidytuesdayR 1.2.0
+
+* [feature] Added functions `tt_clean()`, `tt_save_dataset()`, `tt_intro()`, `tt_meta()`, and `tt_submit()` for curation and submission of datasets for use in TidyTuesday. See `vignette("curating", package = "tidytuesdayR")` for details. (#117, #118, #120, #121, #123, #124, #130)
+* [feature] Added function `tt_curate_data()` with step-by-step script for curation and submission of datasets as described in `vignette("curating", package = "tidytuesdayR")`. (#128)
+* [bug fix] `use_tidytemplate()` now explicitly takes an `ignore` argument, rather than passing (almost entirely overruled) `...` through to `usethis::use_template()`. (#76, #113)
+* [bug fix] Attempting to load data for particularly strange, early weeks (2018 weeks 7 and 8) now errors more informatively. (#90, #113)
+* [maintenance] The `Language` of this package is officially declared in the DESCRIPTION as "en-US". (#114)
+* [maintenance] The [{usethis}](https://usethis.r-lib.org) package is now Suggested, rather than Imported, since it is not necssary for the core functionality of this package. (#117)
+* [maintenance] We now support versions of R >= `4.1.0`. (#126)
+
 # tidytuesdayR 1.1.2
 
-* [maintenance] tidytuesdayR now uses the {gh} package to manage all interactions with the GitHub API. This should make the package more stable and easier to maintain. (@jonthegeek, #78)
+* [maintenance] tidytuesdayR now uses the {gh} package to manage all interactions with the GitHub API. This should make the package more stable and easier to maintain. (#78)
 * [maintenance] tidytuesdayR is now maintained by the Data Science Learning Community. 
 
 # tidytuesdayR 1.0.3

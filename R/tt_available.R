@@ -36,7 +36,7 @@ NULL
 #' @rdname tt_available
 #' @inheritParams shared-params
 #' @export
-#' @return `tt_available()` returns a `tt_dataset_table_list`, which is a
+#' @returns `tt_available()` returns a `tt_dataset_table_list`, which is a
 #' list of `tt_dataset_table`. This class has special printing methods to show
 #' the available data sets.
 tt_available <- function(auth = gh::gh_token()) {
@@ -49,7 +49,7 @@ tt_available <- function(auth = gh::gh_token()) {
 #' @rdname tt_available
 #' @inheritParams shared-params
 #' @export
-#' @return `tt_datasets()` returns a `tt_dataset_table` object. This class has
+#' @returns `tt_datasets()` returns a `tt_dataset_table` object. This class has
 #'  special printing methods to show the available datasets for the year.
 tt_datasets <- function(year, auth = gh::gh_token()) {
   tt_check_year(year, auth = auth)
@@ -73,7 +73,7 @@ tt_datasets <- function(year, auth = gh::gh_token()) {
 #' all time
 #' @inheritParams base::print
 #' @param is_interactive Whether the function is being used interactively.
-#' @return `x`, invisibly
+#' @returns `x`, invisibly
 #' @name tt_print
 #' @examplesIf interactive()
 #' # check to make sure there are requests still available
@@ -117,7 +117,7 @@ print.tt_dataset_table_list <- function(x, ..., is_interactive = interactive()) 
     tmpHTML <- save_tt_object(x, fn = make_tt_dataset_list_html)
     html_viewer(tmpHTML)
   } else {
-    names(x) %>%
+    names(x) |>
       purrr::map(
         function(.x, x) {
           list(
@@ -125,7 +125,7 @@ print.tt_dataset_table_list <- function(x, ..., is_interactive = interactive()) 
           )
         },
         x = x
-      ) %>%
+      ) |>
       purrr::walk(
         function(.x) {
           cat(paste0("Year: ", .x$year, "\n\n"))
@@ -138,10 +138,10 @@ print.tt_dataset_table_list <- function(x, ..., is_interactive = interactive()) 
 }
 
 make_tt_dataset_list_html <- function(x, file = tempfile(fileext = ".html")) {
-  readme <- names(x) %>%
+  readme <- names(x) |>
     purrr::map_chr(
       function(.x, x) {
-        year_table <- attr(x[[.x]], ".html") %>%
+        year_table <- attr(x[[.x]], ".html") |>
           rvest::html_element("table")
         paste(
           "<h2>", .x, "</h2>",
@@ -150,14 +150,14 @@ make_tt_dataset_list_html <- function(x, file = tempfile(fileext = ".html")) {
         )
       },
       x = x
-    ) %>%
+    ) |>
     paste(collapse = "")
 
   readme <- paste(
     "<article class='markdown-body entry-content' itemprop='text'>",
     paste("<h1>TidyTuesday Datasets</h1>", readme), "</article>"
-  ) %>%
-    xml2::read_html() %>%
+  ) |>
+    xml2::read_html() |>
     github_page()
 
   xml2::write_html(readme, file = file)
@@ -172,9 +172,9 @@ github_page <- function(page_content) {
     "github-markdown-css/3.0.1/github-markdown.min.css\"></head>"
   )
 
-  body <- page_content %>%
-    rvest::html_elements("body") %>%
-    as.character() %>%
+  body <- page_content |>
+    rvest::html_elements("body") |>
+    as.character() |>
     enc2native()
 
   xml2::read_html(paste0(header, body))

@@ -38,6 +38,16 @@ test_that("Invalid weeks throw errors", {
     class = "tt-error-invalid_date"
   )
   expect_error(
+    tt_check_date(2018, 7),
+    "automatically loaded",
+    class = "tt-error-invalid_date"
+  )
+  expect_error(
+    tt_check_date(2018, 8),
+    "automatically loaded",
+    class = "tt-error-invalid_date"
+  )
+  expect_error(
     tt_check_date(2020, 1),
     "data available for download",
     class = "tt-error-invalid_date"
@@ -79,6 +89,17 @@ test_that("tt_check_date errors informatively with no args", {
       tt_check_date()
     },
     "Provide either",
+    class = "tt-error-invalid_date"
+  )
+})
+
+test_that("tt_check_date errors informatively for the dirtiest dataset", {
+  local_tt_master_file()
+  expect_error(
+    {
+      tt_check_date("2018-05-15")
+    },
+    "cannot be automatically loaded",
     class = "tt-error-invalid_date"
   )
 })
