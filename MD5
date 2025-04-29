@@ -1,7 +1,7 @@
-f0601c43d1ce5285fbfd902a9a516a77 *DESCRIPTION
+19a675b32e3fb422aa6dfc309f5b6fe0 *DESCRIPTION
 673887880bb1c2804b768bab64982676 *LICENSE
 5a7aad43ced9bc9f1eb8b63bc56b5f55 *NAMESPACE
-975f0d29ba76581552f75f49288359d8 *NEWS.md
+3aaa53445cefad8c2aa5311e14ee6999 *NEWS.md
 c4538a98d2212b6e5421b439d909e6b4 *R/aaa-shared.R
 55e914c4d0ebc38909f64ddb219ebdf7 *R/github_api.R
 0fc1b84a82a1e4aaeb79dee5cc84c46d *R/last_tuesday.R
@@ -138,7 +138,7 @@ af5f3826796f7ea4aae1b8e0c27a4e89 *tests/testthat/test-tt_available.R
 881892db1616ef744c37bc9dc6f20b74 *tests/testthat/test-tt_check_date.R
 e31920fbd90a3340e21d729ecec619ec *tests/testthat/test-tt_clean.R
 4d30e504d31aac75da2181a86c595a5c *tests/testthat/test-tt_curate_data.R
-dabdb5e69dfcb81435c4d710c8befa3c *tests/testthat/test-tt_curate_utils.R
+3d06f255c076116e2f9e1df11b977af8 *tests/testthat/test-tt_curate_utils.R
 8af9054ec0802f27cc05ff2bfd8df104 *tests/testthat/test-tt_download.R
 5138e1ef1572aef6ece9d7324f30ebdb *tests/testthat/test-tt_download_file.R
 696e0597fa54a2d8c19d2f650efef1fe *tests/testthat/test-tt_intro.R

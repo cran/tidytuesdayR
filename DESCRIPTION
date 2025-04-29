@@ -1,7 +1,7 @@
 Type: Package
 Package: tidytuesdayR
 Title: Access the Weekly 'TidyTuesday' Project Dataset
-Version: 1.2.0
+Version: 1.2.1
 Authors@R: c(
     person("Jon", "Harmon", , "jonthegeek@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-4781-4346")),
@@ -32,11 +32,11 @@ Encoding: UTF-8
 Language: en-US
 RoxygenNote: 7.3.2
 NeedsCompilation: no
-Packaged: 2025-04-28 11:10:09 UTC; jonth
+Packaged: 2025-04-29 10:40:10 UTC; jonth
 Author: Jon Harmon [aut, cre] (<https://orcid.org/0000-0003-4781-4346>),
   Ellis Hughes [aut],
   Thomas Mock [ctb],
   Data Science Learning Community [dtc]
 Maintainer: Jon Harmon <jonthegeek@gmail.com>
 Repository: CRAN
-Date/Publication: 2025-04-28 11:20:02 UTC
+Date/Publication: 2025-04-29 14:20:02 UTC
