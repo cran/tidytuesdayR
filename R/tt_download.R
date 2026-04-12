@@ -2,7 +2,7 @@
 #'
 #' Download all or specific files identified in a TidyTuesday dataset.
 #'
-#' @inheritParams shared-params
+#' @inheritParams .shared-params
 #' @inheritParams tt_download_file
 #'
 #' @returns A list of tibbles from the downloaded files.
@@ -14,10 +14,7 @@
 #'
 #' # Download a specific file.
 #' agencies <- tt_download(tt_output, files = "agencies.csv")
-tt_download <- function(tt,
-                        files = "All",
-                        ...,
-                        auth = gh::gh_token()) {
+tt_download <- function(tt, files = "All", ..., auth = gh::gh_token()) {
   files <- tt_check_files(tt, files)
   cli::cli_h1("Downloading files")
   files_len <- length(files)
@@ -43,9 +40,9 @@ tt_check_files <- function(tt, files, call = rlang::caller_env()) {
       )
     },
     error = function(cnd) {
-      cli::cli_abort(
+      .pkg_abort(
         "{.arg files} must be one or more of {.or {.val {all_files}}}, or {.val All}.",
-        class = "tt-error-bad_file",
+        "bad_file",
         call = call
       )
     }

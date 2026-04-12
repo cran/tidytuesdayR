@@ -18,12 +18,19 @@
 #'   use_tidytemplate(name = "My_Awesome_TidyTuesday.Rmd")
 #'
 #' @export
-use_tidytemplate <- function(name = NULL,
-                             open = rlang::is_interactive(),
-                             refdate = today(),
-                             ignore = FALSE) {
+use_tidytemplate <- function(
+  name = NULL,
+  open = rlang::is_interactive(),
+  refdate = today(),
+  ignore = FALSE
+) {
   rlang::check_installed("usethis", "to use the tidytemplate.")
-  stopifnot(valid_date(refdate))
+  if (!valid_date(refdate)) {
+    .pkg_abort(
+      "{.arg refdate} must be a valid date.",
+      "invalid_date"
+    )
+  }
   last_tt <- last_tuesday(refdate)
   if (is.null(name)) {
     name <- paste0(format(last_tt, "%Y_%m_%d"), "_tidy_tuesday.Rmd")

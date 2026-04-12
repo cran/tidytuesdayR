@@ -7,7 +7,7 @@
 #' interactive session.
 #'
 #' @inheritParams usethis::use_template
-#' @inheritParams shared-params
+#' @inheritParams .shared-params
 #' @param title A short title for your submission. It should fit into the
 #'   sentence "This week we're exploring `title`!" For example, for "This week
 #'   we're exploring The 50 US States!", the `title` would be `"The 50 US
@@ -35,15 +35,20 @@
 #' @param attribution Your name as you would like it to appear when we credit
 #'   you in the post for this dataset. You can include a title and/or
 #'   affiliation if you like, such as "Jon Harmon, Executive Director, Data
-#'   Science Learning Community".
+#'   Science Learning Community". Defaults to
+#'   `getOption("tidytuesdayR.attribution")`. We recommend setting this option
+#'   in your `.Rprofile` with `usethis::edit_r_profile()` so you don't have to
+#'   provide it every time you submit a dataset.
 #' @param github Your GitHub username, or a link to your profile on GitHub.
 #' @param bluesky Your Bluesky username, or a link to your profile on Bluesky.
-#'   Leave as `NULL` if you do not wish to be credited on Bluesky.
-#' @param linkedin Your LinkedIn username, or a link to your profile on LinkedIn
-#'   Leave as `NULL` if you do not wish to be credited on LinkedIn.
+#'   Leave as `NULL` if you do not wish to be credited on Bluesky. Defaults to
+#'   `getOption("tidytuesdayR.bluesky")`.
+#' @param linkedin Your LinkedIn username, or a link to your profile on LinkedIn.
+#'   Leave as `NULL` if you do not wish to be credited on LinkedIn. Defaults to
+#'   `getOption("tidytuesdayR.linkedin")`.
 #' @param mastodon Your mastodon server and username, or a link to your profile
 #'   on a mastodon server. Leave as `NULL` if you do not wish to be credited on
-#'   Mastodon.
+#'   Mastodon. Defaults to `getOption("tidytuesdayR.mastodon")`.
 #'
 #' @returns A logical vector indicating whether the file was created or
 #'   modified, invisibly.
@@ -52,21 +57,23 @@
 #' @examplesIf interactive()
 #'
 #'   tt_meta()
-tt_meta <- function(path = "tt_submission",
-                    title,
-                    article_title,
-                    article_url,
-                    source_title,
-                    source_url,
-                    image_filename,
-                    image_alt,
-                    attribution,
-                    github = gh::gh_whoami()$login,
-                    bluesky = NULL,
-                    linkedin = NULL,
-                    mastodon = NULL,
-                    open = rlang::is_interactive(),
-                    ignore = FALSE) {
+tt_meta <- function(
+  path = "tt_submission",
+  title,
+  article_title,
+  article_url,
+  source_title,
+  source_url,
+  image_filename,
+  image_alt,
+  attribution = getOption("tidytuesdayR.attribution"),
+  github = gh::gh_whoami()$login,
+  bluesky = getOption("tidytuesdayR.bluesky"),
+  linkedin = getOption("tidytuesdayR.linkedin"),
+  mastodon = getOption("tidytuesdayR.mastodon"),
+  open = rlang::is_interactive(),
+  ignore = FALSE
+) {
   prep_tt_curate(path, ignore = ignore)
   meta_path <- fs::path(path, "meta.yaml")
 
@@ -132,19 +139,25 @@ tt_meta <- function(path = "tt_submission",
   )
 }
 
-ensure_arg_filled <- function(var,
-                              question,
-                              arg_name = rlang::caller_arg(var),
-                              call = rlang::caller_env()) {
+ensure_arg_filled <- function(
+  var,
+  question,
+  arg_name = rlang::caller_arg(var),
+  call = rlang::caller_env()
+) {
   arg_name <- remove_caller_arg_missing(arg_name)
-  if (rlang::is_missing(var) && rlang::is_interactive()) { # nocov start
+  if (
+    rlang::is_interactive() && (rlang::is_missing(var) || rlang::is_null(var))
+  ) {
+    # nocov start
     question <- paste0("\n", stringr::str_trim(question), "\n")
     cat(question)
     var <- readline()
   } # nocov end
   if (rlang::is_empty(var) || identical(var, "")) {
-    cli::cli_abort(
+    .pkg_abort(
       "{.arg {arg_name}} is required.",
+      "required_arg",
       call = call
     )
   }
@@ -167,15 +180,18 @@ format_image_data <- function(image_filename, image_alt) {
       })
     )
   }
-  cli::cli_abort(
-    "Please provide at least one image filename and corresponding alt text."
+  .pkg_abort(
+    "Please provide at least one image filename and corresponding alt text.",
+    "image_data"
   )
 }
 
-format_social_media <- function(github = gh::gh_whoami()$login,
-                                bluesky = NULL,
-                                linkedin = NULL,
-                                mastodon = NULL) {
+format_social_media <- function(
+  github = gh::gh_whoami()$login,
+  bluesky = NULL,
+  linkedin = NULL,
+  mastodon = NULL
+) {
   socials <- list(
     c(
       attribution_type = "github",
@@ -195,7 +211,8 @@ format_social_media <- function(github = gh::gh_whoami()$login,
     )
   )
   return(purrr::keep(socials, \(social) {
-    "attribution_text" %in% names(social) &&
+    "attribution_text" %in%
+      names(social) &&
       length(social[["attribution_text"]]) > 0 &&
       social[["attribution_text"]] != ""
   }))
@@ -227,10 +244,13 @@ format_mastodon <- function(mastodon) {
     server <- stringr::str_extract(mastodon, "@([^@]+)$", group = 1)
   }
   if (is.na(username) || is.na(server)) {
-    cli::cli_abort(c(
-      "Please provide a valid mastodon username and server.",
-      i = "eg, yourname@yourserver.org or https://yourserver.org/@yourname"
-    ))
+    .pkg_abort(
+      c(
+        "Please provide a valid mastodon username and server.",
+        i = "eg, yourname@yourserver.org or https://yourserver.org/@yourname"
+      ),
+      "mastodon_format"
+    )
   }
   return(glue::glue("@{username}@{server}"))
 }

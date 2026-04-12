@@ -1,6 +1,6 @@
 #' Load TidyTuesday data from Github
 #'
-#' @inheritParams shared-params
+#' @inheritParams .shared-params
 #' @inheritParams tt_download
 #'
 #' @returns `tt_data` object, which contains data that can be accessed via `$`,
@@ -13,11 +13,7 @@
 #' agencies <- tt_output$agencies
 #'
 #' @export
-tt_load <- function(x,
-                    week = NULL,
-                    files = "All",
-                    ...,
-                    auth = gh::gh_token()) {
+tt_load <- function(x, week = NULL, files = "All", ..., auth = gh::gh_token()) {
   # download readme and identify files
   tt <- tt_load_gh(x, week, auth = auth)
 

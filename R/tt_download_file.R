@@ -2,7 +2,7 @@
 #'
 #' Download an actual data file from the TidyTuesday github repository.
 #'
-#' @inheritParams shared-params
+#' @inheritParams .shared-params
 #' @param x Index or name of file to download.
 #' @param ... Additional parameters to pass to the parsing functions. Note:
 #'   These arguments will be passed for all filetypes.
@@ -17,19 +17,16 @@
 #'
 #' agencies <- tt_download_file(tt_gh, 1)
 #' launches <- tt_download_file(tt_gh, "launches.csv")
-tt_download_file <- function(tt,
-                             x,
-                             ...,
-                             auth = gh::gh_token()) {
+tt_download_file <- function(tt, x, ..., auth = gh::gh_token()) {
   file_info <- attr(tt, ".files")
   tt_date <- attr(tt, ".date")
   call <- rlang::caller_env()
   target <- tryCatch(
     tt_subset_file_info(file_info, x),
     error = function(e) {
-      cli::cli_abort(
+      .pkg_abort(
         "File {x} not found in the available files for {tt_date}.",
-        class = "tt-error-bad_index",
+        "bad_index",
         call = call
       )
     }
@@ -58,7 +55,8 @@ tt_download_file_raw <- function(tt_date, target) {
 }
 
 tt_parse_download <- function(gh_response, ..., data_type, delim = NA) {
-  switch(data_type,
+  switch(
+    data_type,
     "rds" = return(tt_parse_rds(gh_response, ...)), # nocov 3 examples
     "xls" = return(tt_parse_excel(gh_response, ...)), # nocov 0 examples
     "xlsx" = return(tt_parse_excel(gh_response, ...)),
@@ -67,7 +65,7 @@ tt_parse_download <- function(gh_response, ..., data_type, delim = NA) {
   )
   file_content <- gh_extract_text(gh_response)
   delim <- tt_guess_delim(delim, data_type)
-  readr::read_delim(file_content, delim = delim, show_col_types = FALSE, ...)
+  readr::read_delim(I(file_content), delim = delim, show_col_types = FALSE, ...)
 }
 
 tt_parse_excel <- function(gh_response, ...) {
@@ -87,7 +85,8 @@ tt_guess_delim <- function(delim, data_type) {
   if (!is.na(delim)) {
     return(delim)
   }
-  switch(tolower(data_type),
+  switch(
+    tolower(data_type),
     "csv" = ",", # nocov
     "tsv" = "\t",
     "," # nocov

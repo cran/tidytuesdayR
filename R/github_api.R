@@ -7,13 +7,14 @@
 
 #' Get data from the tt github repo.
 #'
-#' @inheritParams shared-params
+#' @inheritParams .shared-params
 #' @param path Path within the `rfordatascience/tidytuesday` repo.
 #' @param ... Additional parameters passed to [gh::gh()].
 #'
 #' @returns The GitHub response as parsed by [gh::gh()].
 #' @keywords internal
 gh_get <- function(path, auth = gh::gh_token(), ...) {
+  auth <- gh_auth_check(auth)
   gh::gh(
     "/repos/:tt_repo/contents/:path",
     path = path,
@@ -72,6 +73,19 @@ gh_get_readme_html <- function(path, auth = gh::gh_token()) {
 
 # Do not hit api ----
 
+gh_auth_check <- function(auth = gh::gh_token()) {
+  if (!nchar(auth)) {
+    .pkg_abort(
+      c(
+        x = "{.arg auth} is not a valid github token.",
+        i = "See the {.vignette gh::managing-personal-access-tokens} vignette."
+      ),
+      "bad_gh_auth"
+    )
+  }
+  return(auth)
+}
+
 gh_raw_to_chr <- function(encoded_raw) {
   return(rawToChar(jsonlite::base64_dec(encoded_raw)))
 }
@@ -80,9 +94,9 @@ gh_extract_text <- function(gh_response) {
   if (length(gh_response) && length(gh_response$content)) {
     return(gh_raw_to_chr(gh_response$content))
   }
-  cli::cli_abort(
+  .pkg_abort(
     "No content found in {.var gh_response}.",
-    class = "tt-error-bad_gh_response"
+    "bad_gh_response"
   )
 }
 
@@ -90,9 +104,9 @@ gh_extract_html <- function(gh_response) {
   if (length(gh_response) && length(gh_response$message)) {
     return(xml2::read_html(gh_response$message))
   }
-  cli::cli_abort(
+  .pkg_abort(
     "No html found in {.var gh_response}.",
-    class = "tt-error-bad_gh_response"
+    "bad_gh_response"
   )
 }
 
@@ -113,11 +127,11 @@ gh_extract_sha_in_folder <- function(folder, file) {
     return(target[[1]]$sha)
   }
   file_names <- purrr::map_chr(folder, "name")
-  cli::cli_abort(
+  .pkg_abort(
     c(
       "File {.val {file}} not found in folder.",
       i = "Found {cli::no({length(file_names)})} file{?s}: {.val {file_names}}"
     ),
-    class = "tt-error-file_not_found"
+    "file_not_found"
   )
 }

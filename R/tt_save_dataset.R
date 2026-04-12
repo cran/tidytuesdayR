@@ -8,7 +8,7 @@
 #' dictionary file is opened for editing.
 #'
 #' @inheritParams usethis::use_template
-#' @inheritParams shared-params
+#' @inheritParams .shared-params
 #' @param dataset The clean dataset to save. The dataset must be a data.frame.
 #' @param dataset_name The name to save the dataset as. By default, the name of
 #'   the dataset variable is used.
@@ -20,11 +20,13 @@
 #' @examplesIf interactive()
 #'
 #'   tt_save_dataset(mtcars)
-tt_save_dataset <- function(dataset,
-                            path = "tt_submission",
-                            dataset_name = rlang::caller_arg(dataset),
-                            open = rlang::is_interactive(),
-                            ignore = FALSE) {
+tt_save_dataset <- function(
+  dataset,
+  path = "tt_submission",
+  dataset_name = rlang::caller_arg(dataset),
+  open = rlang::is_interactive(),
+  ignore = FALSE
+) {
   prep_tt_curate(path, ignore = ignore)
   rlang::check_installed(c("readr"), "to save the dataset CSV.")
   path <- usethis::proj_path(path)

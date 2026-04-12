@@ -4,19 +4,15 @@ test_that("tt_download_file errors for bad index", {
   expect_message(expect_message({
     tt <- tt_load_gh("2019-01-15")
   }))
-  expect_error(
-    {
-      tt_download_file(tt, 3)
-    },
-    "File 3 not found",
-    class = "tt-error-bad_index"
+  stbl::expect_pkg_error_snapshot(
+    tt_download_file(tt, 3),
+    "tidytuesdayR",
+    "bad_index"
   )
-  expect_error(
-    {
-      tt_download_file(tt, "bad_filename")
-    },
-    "File bad_filename not found",
-    class = "tt-error-bad_index"
+  stbl::expect_pkg_error_snapshot(
+    tt_download_file(tt, "bad_filename"),
+    "tidytuesdayR",
+    "bad_index"
   )
 })
 
@@ -32,9 +28,24 @@ test_that("tt_download_file works for a valid tt", {
   expect_setequal(
     colnames(test_result),
     c(
-      "agency", "count", "ucode", "state_code", "type", "class", "tstart",
-      "tstop", "short_name", "name", "location", "longitude", "latitude",
-      "error", "parent", "short_english_name", "english_name", "unicode_name",
+      "agency",
+      "count",
+      "ucode",
+      "state_code",
+      "type",
+      "class",
+      "tstart",
+      "tstop",
+      "short_name",
+      "name",
+      "location",
+      "longitude",
+      "latitude",
+      "error",
+      "parent",
+      "short_english_name",
+      "english_name",
+      "unicode_name",
       "agency_type"
     )
   )
@@ -52,8 +63,14 @@ test_that("tt_download_file works when delim isn't explicitly provided", {
   expect_setequal(
     colnames(test_result),
     c(
-      "id", "title", "author", "year", "total_weeks", "first_week",
-      "debut_rank", "best_rank"
+      "id",
+      "title",
+      "author",
+      "year",
+      "total_weeks",
+      "first_week",
+      "debut_rank",
+      "best_rank"
     )
   )
 })
@@ -70,8 +87,19 @@ test_that("tt_download_file downloads and parses xlsx", {
   expect_setequal(
     colnames(test_result),
     c(
-      "State", "2004-05", "2005-06", "2006-07", "2007-08", "2008-09", "2009-10",
-      "2010-11", "2011-12", "2012-13", "2013-14", "2014-15", "2015-16"
+      "State",
+      "2004-05",
+      "2005-06",
+      "2006-07",
+      "2007-08",
+      "2008-09",
+      "2009-10",
+      "2010-11",
+      "2011-12",
+      "2012-13",
+      "2013-14",
+      "2014-15",
+      "2015-16"
     )
   )
 })
